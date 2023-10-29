@@ -1,24 +1,25 @@
-import React from "react";
-import "./details.css";
+import React from 'react';
+import './details.css';
 
-export default function Details({ data, onClose }) {
-  return (
+export default function Details({ card, isLoading }) {
+  return isLoading ? (
+    <h1>Загрузка...</h1>
+  ) : (
     <div className='detail'>
-      <button className='close-btn' onClick={onClose}>
-        X
-      </button>
-      <h3 className='detail__title'>{data.name}</h3>
+      <h3 className='detail__title'>{card.name}</h3>
       <img
-        src={data.sprites.other.dream_world.front_default}
-        alt={data.name}
+        src={card.sprites.other.dream_world.front_default}
+        alt={card.name}
         className='detail__image'
       />
       <div className='abilities'>
         <h2 className='abilities__title'>Abilities</h2>
         <div className='ability'>
-          {data.abilities.map((poke, index) => {
+          {card.abilities.map((poke, index) => {
             return (
-              <h3 key={index + Math.random()} className='ability__title'>
+              <h3
+                key={index + Math.random()}
+                className='ability__title'>
                 {poke.ability.name}
               </h3>
             );
@@ -26,9 +27,11 @@ export default function Details({ data, onClose }) {
         </div>
       </div>
       <div className='stats'>
-        {data.stats.map((poke, index) => {
+        {card.stats.map((poke, index) => {
           return (
-            <div key={index + Math.random()} className='stats__item'>
+            <div
+              key={index + Math.random()}
+              className='stats__item'>
               <h3>{poke.stat.name}:</h3>
               <p>{poke.base_stat} points</p>
             </div>

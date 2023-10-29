@@ -1,37 +1,25 @@
-import React from "react";
-import "./card.css";
+import React from 'react';
+import poke from '../../image/icons8-покемон-96.png';
+import './card.css';
+import { Link } from 'react-router-dom';
 
-export default function Card({
-  image,
-  name,
-  height,
-  weight,
-  base,
-  handleClick,
-}) {
+export default function Card({ name, handleClick }) {
   return (
     <li className={`card`}>
       <h3 className='card__title'>{name}</h3>
       <div className='card__description'>
-        <img src={image} alt={name} className='card__image' />
-        <div className='card-wrapper'>
-          <div className='card-stat'>
-            <p className='card-stat__name'>Рост</p>
-            <p className='card-stat__data'>{height}</p>
-          </div>
-          <div className='card-stat'>
-            <p className='card-stat__name'>Вес</p>
-            <p className='card-stat__data'>{weight}</p>
-          </div>
-          <div className='card-stat'>
-            <p className='card-stat__name'>Базовый опыт</p>
-            <p className='card-stat__data'>{base}</p>
-          </div>
-        </div>
+        <img
+          src={poke}
+          alt='Иконка покемона'
+          className='card__image'
+        />
       </div>
-      <button className='card__button' onClick={handleClick}>
+      <Link
+        to={`pokemon/${name}`}
+        className='card__button'
+        onClick={handleClick}>
         Подробнее
-      </button>
+      </Link>
     </li>
   );
 }
