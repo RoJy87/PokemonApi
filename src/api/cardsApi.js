@@ -4,7 +4,9 @@ const BASE_URL = 'https://pokeapi.co/api/v2/pokemon/';
 
 const getAllCards = async (cardsNumber) => {
   try {
-    const res = await axios.get(`${BASE_URL}?offset=20&limit=${cardsNumber}`);
+    const res = await axios.get(
+      `${BASE_URL}?offset=${cardsNumber}&limit=${cardsNumber}`,
+    );
     return res.data.results;
   } catch (err) {
     console.log(err);

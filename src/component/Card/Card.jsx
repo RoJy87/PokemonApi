@@ -1,9 +1,10 @@
 import React from 'react';
 import poke from '../../image/icons8-покемон-96.png';
 import './card.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export default function Card({ name, handleClick }) {
+export default function Card({ name }) {
+  const navigate = useNavigate();
   return (
     <li className={`card`}>
       <h3 className='card__title'>{name}</h3>
@@ -14,12 +15,13 @@ export default function Card({ name, handleClick }) {
           className='card__image'
         />
       </div>
-      <Link
-        to={`pokemon/${name}`}
+      <button
+        replace='true'
         className='card__button'
-        onClick={handleClick}>
+        onClick={() => navigate(`details/${name}`, { replace: true })}
+      >
         Подробнее
-      </Link>
+      </button>
     </li>
   );
 }

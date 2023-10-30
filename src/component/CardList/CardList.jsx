@@ -2,12 +2,7 @@ import React from 'react';
 import Card from '../Card/Card';
 import './cardList.css';
 
-export default function CardList({
-  cards,
-  onClickHandler,
-  isActive,
-  isLoading,
-}) {
+export default function CardList({ cards, isActive, isLoading }) {
   return isLoading ? (
     <h1>Загрузка...</h1>
   ) : (
@@ -17,7 +12,6 @@ export default function CardList({
           <Card
             key={card.name}
             name={card.name}
-            handleClick={() => onClickHandler(card)}
             className='card-list__item'
           />
         );

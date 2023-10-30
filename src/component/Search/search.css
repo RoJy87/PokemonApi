@@ -1,0 +1,32 @@
+.search {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px 70px;
+  height: 80px;
+}
+
+.search-input {
+  width: 50%;
+  border-radius: 15px;
+  height: 100%;
+}
+
+.filter-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  border-radius: 15px;
+  padding: 10px;
+  box-shadow: 2px 2px 5px #2e639e;
+  transition: box-shadow 0.3s ease;
+}
+
+.filter-button:hover {
+  box-shadow: 2px 2px 15px #2e639e;
+}

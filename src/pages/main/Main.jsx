@@ -1,57 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import CardList from '../../component/CardList/CardList';
-import { getAllCards, getCard } from '../../api/cardsApi';
+import Search from '../../component/Search/Search';
+import PaginationButton from '../../component/PaginationButton/PaginationButton';
 
-export default function Main() {
-  const [pokemons, setPokemons] = useState([]);
-  const [pokemon, setPokemon] = useState({});
-  const [onPageNumber, setOnPageNumber] = useState(30);
-  const [isActive, setIsActive] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function getAllPokemons(cardsNumber) {
-    try {
-      setIsLoading(true);
-      const pokemons = await getAllCards(cardsNumber);
-      pokemons.forEach((poke) => {
-        setPokemons((prev) => {
-          const isExist = prev.some((item) => item.name === poke.name);
-          if (!isExist) {
-            return [...prev, poke];
-          }
-          return prev;
-        });
-        setIsLoading(false);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getPokemon(name) {
-    try {
-      const pokemon = await getCard(name);
-      setPokemon(pokemon);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    getAllPokemons(onPageNumber);
-  }, []);
-
+export default function Main({
+  pokemons,
+  isLoading,
+  isActive,
+  onSearchHandler,
+  onClickFilter,
+  onPaginationHandler,
+}) {
   return (
-    <section>
+    <>
+      <Search
+        onSearchHandler={onSearchHandler}
+        onClickFilter={onClickFilter}
+      />
       <CardList
         isActive={isActive}
         cards={pokemons}
         isLoading={isLoading}
-        onClickHandler={(card) => {
-          getPokemon(card.name);
-          setIsActive(true);
-        }}
       />
-    </section>
+      <div className='pagination'>
+        <PaginationButton
+          className='pagination-btn'
+          name='Назад'
+          onClick={onPaginationHandler}
+        />
+        <PaginationButton
+          className='pagination-btn'
+          name='Вперед'
+          onClick={onPaginationHandler}
+        />
+      </div>
+    </>
   );
 }
