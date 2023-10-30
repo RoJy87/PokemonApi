@@ -2,6 +2,7 @@ import React from 'react';
 import CardList from '../../component/CardList/CardList';
 import Search from '../../component/Search/Search';
 import PaginationButton from '../../component/PaginationButton/PaginationButton';
+import { Outlet } from 'react-router-dom';
 
 export default function Main({
   pokemons,
@@ -22,6 +23,7 @@ export default function Main({
         cards={pokemons}
         isLoading={isLoading}
       />
+      <Outlet />
       <div className='pagination'>
         <PaginationButton
           className='pagination-btn'

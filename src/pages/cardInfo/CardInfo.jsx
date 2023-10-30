@@ -30,11 +30,11 @@ export default function CardInfo({ pokemons, isLoading }) {
 
   return (
     <section className='card-info'>
-      <CardList
+      {/* <CardList
         isActive={isActive}
         cards={pokemons}
         isLoading={isLoading}
-      />
+      /> */}
       <Details pokemon={pokemon} />
     </section>
   );

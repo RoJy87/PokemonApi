@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Layout from '../../layouts/main';
+import Layout from '../../Layout/Layout';
 import Main from '../../pages/main/Main';
 import CardInfo from '../../pages/cardInfo/CardInfo';
 import { useEffect, useState } from 'react';
@@ -46,8 +46,10 @@ function App() {
 
   return (
     <div className='App'>
-      <Layout>
-        <Routes>
+      <Routes>
+        <Route
+          path='/'
+          element={<Layout />}>
           <Route
             path='/'
             element={
@@ -58,23 +60,25 @@ function App() {
                 onClickFilter={onClickFilter}
                 onPaginationHandler={onPaginationHandler}
               />
-            }
-          />
-          <Route
-            path='details/:nameId'
-            element={
-              <CardInfo
-                pokemons={pokemons}
-                isLoading={isLoading}
-              />
-            }
-          />
+            }>
+            {' '}
+            <Route
+              path='details/:nameId'
+              element={
+                <CardInfo
+                  pokemons={pokemons}
+                  isLoading={isLoading}
+                />
+              }
+            />
+          </Route>
+
           <Route
             path='*'
             element={<p>Not Found</p>}
           />
-        </Routes>
-      </Layout>
+        </Route>
+      </Routes>
     </div>
   );
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import './details.css';
 
 export default function Details({ pokemon }) {
-  console.log(pokemon);
   return (
     <div className='detail'>
       <h3 className='detail__title'>{pokemon.name}</h3>
@@ -18,8 +17,7 @@ export default function Details({ pokemon }) {
             return (
               <p
                 key={index}
-                className='ability__title'
-              >
+                className='ability__title'>
                 {poke.ability.name}
               </p>
             );
@@ -31,8 +29,7 @@ export default function Details({ pokemon }) {
           return (
             <div
               key={index}
-              className='stats__item'
-            >
+              className='stats__item'>
               <h3>{poke.stat.name}:</h3>
               <p>{poke.base_stat} points</p>
             </div>
