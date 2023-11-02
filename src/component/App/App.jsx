@@ -7,9 +7,8 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path='/' element={<Main />}>
-          <Route path='details/:nameid' element={<Details />} />
-        </Route>
+        <Route path='/' element={<Main />} />
+        <Route path='/details/:nameid' element={<Details />} />
         <Route path='*' element={<p>Not Found</p>} />
       </Routes>
     </Layout>

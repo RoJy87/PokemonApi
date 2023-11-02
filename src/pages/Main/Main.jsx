@@ -1,10 +1,11 @@
-import React, { memo, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import CardList from '../../component/CardList/CardList'
-import Search from '../../component/Search/Search'
+import NavComponent from '../../component/NavComponent/NavComponent'
 import PaginationButton from '../../component/PaginationButton/PaginationButton'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
-import { getAllCards } from '../../api/cardsApi'
+import { getAllCards, getCard } from '../../api/cardsApi'
+import usePagination from '../../hooks/usePagination'
 
 const PaginationWrapper = styled.div`
   margin: 0 auto 20px;
@@ -20,33 +21,30 @@ const ListWrapper = styled.div`
   flex-grow: 1;
 `
 
-const Main = memo(function Main() {
-  const [pageNumber, setPageNumber] = useState(1)
-  const [limitOnPage, setLimitOnPage] = useState(20)
-  const [totalPages, setTotalPages] = useState(0)
+const Main = () => {
+  console.log('main', 'rerender')
+
+  const [pageNumber, limitOnPage, totalPages, prevPage, nextPage, onClickFilter, setTotalPages] = usePagination()
+
   const [pokemons, setPokemons] = useState([])
   const [searchPoke, setSearchPoke] = useState(pokemons)
+  const [searchNotFound, setSearchNotFound] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  async function getAllPokemons(limit, offset) {
-    setIsLoading(true)
-    try {
-      const { totalCount, pokemons } = await getAllCards(limit, offset)
-      setTotalPages(Math.floor(totalCount / limit))
-      pokemons.forEach((poke) => {
-        setPokemons((prev) => {
-          const isExist = prev.some((item) => item.name === poke.name)
-          if (!isExist) {
-            return [...prev, poke]
-          }
-          return prev
-        })
-      })
-      setIsLoading(false)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const getAllPokemons = useCallback(
+    async (limit, offset) => {
+      setIsLoading(true)
+      try {
+        const { totalCount, pokemons } = await getAllCards(limit, offset)
+        setTotalPages(Math.floor(totalCount / limit))
+        setPokemons(pokemons)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [setTotalPages],
+  )
 
   useEffect(() => {
     setSearchPoke(pokemons)
@@ -55,43 +53,39 @@ const Main = memo(function Main() {
   useEffect(() => {
     setPokemons([])
     getAllPokemons(limitOnPage, pageNumber)
-  }, [pageNumber, limitOnPage])
-
-  const prevPage = useCallback(() => {
-    setPageNumber(Math.max(pageNumber - 1, 1))
-  }, [pageNumber])
-
-  const nextPage = useCallback(() => {
-    setPageNumber(pageNumber + 1)
-  }, [pageNumber])
-
-  const onClickFilter = useCallback((num) => {
-    setLimitOnPage(num)
-  }, [])
+  }, [pageNumber, limitOnPage, getAllPokemons])
 
   const onSearchHandler = useCallback(
-    (text) => {
-      if (!text) return setSearchPoke(pokemons)
-      const result = pokemons.filter((poke) => {
-        return poke.name.toLowerCase().includes(text.toLowerCase())
-      })
-      setSearchPoke(result)
+    async (text) => {
+      setSearchNotFound(false)
+      try {
+        if (!text) return setSearchPoke(pokemons)
+        const result = await getCard(text)
+        if (!result) return setSearchNotFound(true)
+        setSearchPoke([result])
+      } catch (error) {
+        console.log(error)
+      }
     },
     [pokemons],
   )
 
   return (
     <>
-      <Search onSearchHandler={onSearchHandler} onClickFilter={onClickFilter} />
+      <NavComponent onSearchHandler={onSearchHandler} onClickFilter={onClickFilter} />
       <ListWrapper>
-        <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
+        {searchNotFound ? (
+          <h1>Не найдено</h1>
+        ) : (
+          <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
+        )}
         <Outlet />
       </ListWrapper>
       <PaginationWrapper>
         {pageNumber > 1 && <PaginationButton name='Назад' onClick={prevPage} />}
-        {pageNumber < totalPages && <PaginationButton name='Вперед' onClick={nextPage} />}
+        {pageNumber < totalPages && <PaginationButton $bgColor='#760f96' name='Вперед' onClick={nextPage} />}
       </PaginationWrapper>
     </>
   )
-})
+}
 export default Main
