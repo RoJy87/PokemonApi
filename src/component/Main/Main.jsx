@@ -2,16 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import CardList from '../../component/CardList/CardList'
 import NavComponent from '../../component/NavComponent/NavComponent'
 import PaginationButton from '../../component/PaginationButton/PaginationButton'
-import styled from 'styled-components'
 import { getAllCards, getCard } from '../../api/cardsApi'
 import usePagination from '../../hooks/usePagination'
-
-const PaginationWrapper = styled.div`
-  margin: 0 auto 20px;
-  width: fit-content;
-  display: flex;
-  gap: 20px;
-`
 
 const Main = () => {
   console.log('main', 'rerender')
@@ -70,10 +62,10 @@ const Main = () => {
       ) : (
         <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
       )}
-      <PaginationWrapper>
+      <div>
         {pageNumber > 1 && <PaginationButton name='Назад' onClick={prevPage} />}
         {pageNumber < totalPages && <PaginationButton $bgColor='#760f96' name='Вперед' onClick={nextPage} />}
-      </PaginationWrapper>
+      </div>
     </>
   )
 }

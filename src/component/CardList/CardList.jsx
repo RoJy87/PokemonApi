@@ -1,21 +1,25 @@
 import React, { memo } from 'react'
-import Card from '../Card/Card'
-import { useParams } from 'react-router-dom'
-import { CardListComponent, CardListLoading } from './styled'
+import poke from '../../image/icon.png'
+// import Card from '../Card/Card'
+import { Card, Image, Flex } from 'antd'
+import { NavLink } from 'react-router-dom'
 
 const CardList = memo(function CardList({ pokemons, isLoading }) {
   console.log('CardList', 'rerender')
 
-  const { nameid } = useParams()
-
   return isLoading ? (
-    <CardListLoading>Загрузка...</CardListLoading>
+    <h1>Загрузка...</h1>
   ) : (
-    <CardListComponent $nameid={nameid}>
+    <Flex wrap='wrap' gap='small' justify='center' align='flex-start'>
       {pokemons?.map((pokemon) => {
-        return <Card key={pokemon.name} name={pokemon.name} />
+        return (
+          <Card key={pokemon.name} name={pokemon.name} title={pokemon.name} style={{ width: 300 }}>
+            <Image src={poke} width={100} />
+            <NavLink to={`details/${pokemon.name}`}>Подробнее</NavLink>
+          </Card>
+        )
       })}
-    </CardListComponent>
+    </Flex>
   )
 })
 export default CardList

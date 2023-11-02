@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getCard } from '../../api/cardsApi'
-import { useParams } from 'react-router-dom'
-import {
-  Abilities,
-  AbilitiesTitle,
-  Ability,
-  AbilityTitle,
-  CloseButton,
-  Detail,
-  DetailImage,
-  DetailTitle,
-  DetailWrapper,
-  Stats,
-  StatsItem,
-  StatsItems,
-} from './styled'
+import { Link, useParams } from 'react-router-dom'
+import { Card, Image, Flex, Space, Divider } from 'antd'
 
 export default function Details() {
   console.log('Details', 'rerender')
@@ -40,35 +27,35 @@ export default function Details() {
 
   return (
     pokemon && (
-      <Detail>
+      <Divider>
         {isLoading ? (
           <h1>Загрузка...</h1>
         ) : (
-          <DetailWrapper>
-            <CloseButton to={'/'}></CloseButton>
-            <DetailTitle>{pokemon.name}</DetailTitle>
-            <DetailImage src={pokemon.sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
-            <Abilities>
-              <AbilitiesTitle>Abilities</AbilitiesTitle>
-              <Ability>
+          <Flex vertical justify='center' align='center' style={{ width: 300 }}>
+            <Link to={'/'}></Link>
+            <h3>{pokemon.name}</h3>
+            <img src={pokemon.sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
+            <div>
+              <p>Abilities</p>
+              <div>
                 {pokemon.abilities?.map((poke, index) => {
-                  return <AbilityTitle key={index}>{poke.ability?.name}</AbilityTitle>
+                  return <p key={index}>{poke.ability?.name}</p>
                 })}
-              </Ability>
-            </Abilities>
-            <Stats>
+              </div>
+            </div>
+            <div>
               {pokemon.stats?.map((poke, index) => {
                 return (
-                  <StatsItems key={index}>
-                    <StatsItem>{poke.stat?.name}:</StatsItem>
-                    <StatsItem>{poke.base_stat} points</StatsItem>
-                  </StatsItems>
+                  <div key={index}>
+                    <p>{poke.stat?.name}:</p>
+                    <p>{poke.base_stat} points</p>
+                  </div>
                 )
               })}
-            </Stats>
-          </DetailWrapper>
+            </div>
+          </Flex>
         )}
-      </Detail>
+      </Divider>
     )
   )
 }

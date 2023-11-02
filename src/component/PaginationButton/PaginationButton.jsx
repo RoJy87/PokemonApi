@@ -1,9 +1,9 @@
 import React from 'react'
-import { Button } from './styled'
+import { Button } from 'antd'
 
-export default function PaginationButton({ onClick, name, $bgColor }) {
+export default function PaginationButton({ onClick, name }) {
   return (
-    <Button onClick={onClick} $bgColor={$bgColor}>
+    <Button type='primary' shape='round' size='large' onClick={onClick}>
       {name}
     </Button>
   )
