@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import CardList from '../../component/CardList/CardList'
 import NavComponent from '../../component/NavComponent/NavComponent'
 import PaginationButton from '../../component/PaginationButton/PaginationButton'
-import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import { getAllCards, getCard } from '../../api/cardsApi'
 import usePagination from '../../hooks/usePagination'
@@ -12,13 +11,6 @@ const PaginationWrapper = styled.div`
   width: fit-content;
   display: flex;
   gap: 20px;
-`
-
-const ListWrapper = styled.div`
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-  flex-grow: 1;
 `
 
 const Main = () => {
@@ -73,14 +65,11 @@ const Main = () => {
   return (
     <>
       <NavComponent onSearchHandler={onSearchHandler} onClickFilter={onClickFilter} />
-      <ListWrapper>
-        {searchNotFound ? (
-          <h1>Не найдено</h1>
-        ) : (
-          <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
-        )}
-        <Outlet />
-      </ListWrapper>
+      {searchNotFound ? (
+        <h1>Не найдено</h1>
+      ) : (
+        <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
+      )}
       <PaginationWrapper>
         {pageNumber > 1 && <PaginationButton name='Назад' onClick={prevPage} />}
         {pageNumber < totalPages && <PaginationButton $bgColor='#760f96' name='Вперед' onClick={nextPage} />}

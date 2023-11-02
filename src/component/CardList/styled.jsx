@@ -7,6 +7,7 @@ export const CardListComponent = styled.ul`
   list-style-type: none;
   overflow-y: auto;
   flex-grow: 1;
+  margin-bottom: 20px;
   ${(props) => {
     const nameid = props?.$nameid
     return nameid

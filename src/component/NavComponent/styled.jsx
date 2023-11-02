@@ -21,10 +21,11 @@ const LimitCards = styled.div`
 const LimitButton = styled.button`
   cursor: pointer;
   border: none;
-  background-color: transparent;
+  background: ${(props) => props.theme.backgroundButton};
   border-radius: 15px;
   padding: 10px;
   box-shadow: 2px 2px 5px #2e639e;
+  color: ${(props) => props.theme.color};
   transition: box-shadow 0.3s ease;
   &:hover {
     box-shadow: 2px 2px 15px #2e639e;

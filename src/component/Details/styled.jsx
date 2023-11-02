@@ -3,6 +3,12 @@ import styled from 'styled-components'
 import close_icon from '../../image/close_icon.svg'
 
 export const Detail = styled.div`
+  display: flex;
+  padding: 30px;
+  justify-content: center;
+`
+
+export const DetailWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;

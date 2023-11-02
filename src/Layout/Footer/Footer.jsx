@@ -8,7 +8,8 @@ const FooterComponent = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 32px;
-  background: linear-gradient(135deg, #5fc3e4 0%, #e55d87 100%);
+  background: ${(props) => props.theme.backgroundFooter};
+  color: ${(props) => props.theme.color};
 `
 
 export default function Footer() {

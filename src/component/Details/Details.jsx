@@ -10,6 +10,7 @@ import {
   Detail,
   DetailImage,
   DetailTitle,
+  DetailWrapper,
   Stats,
   StatsItem,
   StatsItems,
@@ -43,7 +44,7 @@ export default function Details() {
         {isLoading ? (
           <h1>Загрузка...</h1>
         ) : (
-          <>
+          <DetailWrapper>
             <CloseButton to={'/'}></CloseButton>
             <DetailTitle>{pokemon.name}</DetailTitle>
             <DetailImage src={pokemon.sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
@@ -65,7 +66,7 @@ export default function Details() {
                 )
               })}
             </Stats>
-          </>
+          </DetailWrapper>
         )}
       </Detail>
     )

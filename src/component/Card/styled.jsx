@@ -18,7 +18,9 @@ export const CardTitle = styled.h3`
   width: 100%;
   flex-grow: 2;
   text-align: center;
-  background-color: #438adb;
+  /* background-color: #438adb; */
+  background: ${(props) => props.theme.backgroundButton};
+  color: ${(props) => props.theme.color};
   border-radius: 10px 10px 0 0;
   padding: 10px;
 `
@@ -31,7 +33,7 @@ export const CardImage = styled.img`
 
 export const CardButton = styled(NavLink)`
   cursor: pointer;
-  background-color: transparent;
+  background: ${(props) => props.theme.backgroundButton};
   border: none;
   width: 50%;
   padding: 15px;
@@ -40,12 +42,14 @@ export const CardButton = styled(NavLink)`
   border-radius: 10px;
   transition: box-shadow 0.3s ease;
   text-decoration: none;
-  color: #000;
+  /* color: #000; */
+  color: ${(props) => props.theme.color};
   &:hover {
     box-shadow: 1px 1px 20px #475fac;
   }
 
   &.active {
-    background-color: #438adb;
+    /* background-color: #438adb; */
+    background: ${(props) => props.theme.background};
   }
 `

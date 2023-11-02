@@ -6,33 +6,43 @@ import styled from 'styled-components'
 const HeaderComponent = styled.header`
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #e55d87 0%, #5fc3e4 100%);
+  background: ${(props) => props.theme.backgroundHeader};
   padding: 10px 20px;
 `
 
-const HeaderLink = styled(Link)`
-  color: #bf4f74;
-  font-weight: bold;
-`
+const HeaderLink = styled(Link)``
 
-const HeaderLogo = styled.img`
-  color: #bf4f74;
-  font-weight: bold;
-`
+const HeaderLogo = styled.img``
 
 const HeaderTitle = styled.h1`
+  color: ${(props) => props.theme.color};
   font-size: 38px;
   flex-grow: 1;
   text-align: center;
 `
 
-export default function Header() {
+const HeaderTheme = styled.h1`
+  color: ${(props) => props.theme.color};
+  background-color: transparent;
+  font-size: 18px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 0 5px #2964a8;
+  border-radius: 15px;
+  transition: box-shadow 0.3s ease;
+  &: hover {
+    box-shadow: 1px 1px 20px #2964a8;
+  }
+`
+
+export default function Header({ toggleTheme }) {
   return (
     <HeaderComponent>
       <HeaderLink to={'/'}>
-        <HeaderLogo src={logo} alt='logo' className='header__logo' />
+        <HeaderLogo src={logo} alt='logo' />
       </HeaderLink>
       <HeaderTitle>Pokemon stats</HeaderTitle>
+      <HeaderTheme onClick={toggleTheme}>Theme</HeaderTheme>
     </HeaderComponent>
   )
 }

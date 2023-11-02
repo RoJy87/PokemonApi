@@ -3,8 +3,6 @@ import poke from '../../image/icon.png'
 import { CardButton, CardComponent, CardImage, CardTitle } from './styled'
 
 const Card = memo(function Card({ name }) {
-  console.log('Card', 'rerender')
-
   return (
     <CardComponent>
       <CardTitle>{name}</CardTitle>
