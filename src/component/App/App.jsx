@@ -5,70 +5,106 @@ import useTheme from '../../hooks/useTheme'
 import logo from '../../image/logo.png'
 import { Link } from 'react-router-dom'
 import { App, Button, ConfigProvider, Image, Layout } from 'antd'
-const { Header, Content, Footer } = Layout
-
-const theme = {
-  dark: {
-    color: '#FFF',
-    backgroundHeader: 'linear-gradient(135deg, #e55d87 0%, #5fc3e4 100%)',
-    backgroundFooter: 'linear-gradient(135deg, #5fc3e4 0%, #e55d87 100%)',
-    backgroundButton: '#e55d87',
-    background: '#55545f',
-  },
-  light: {
-    color: '#000',
-    backgroundHeader: 'linear-gradient(135deg, #5fc3e4 0%, #e55d87 100%)',
-    backgroundFooter: 'linear-gradient(135deg, #e55d87 0%, #5fc3e4 100%)',
-    backgroundButton: '#5fc3e4',
-    background: '#ccc',
-  },
-}
+import Title from 'antd/es/typography/Title'
+import { Content, Footer, Header } from 'antd/es/layout/layout'
 
 const HeaderStyle = {
-  background: 'linear-gradient(135deg, #e55d87 0%, #5fc3e4 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: ' space-between',
   height: 120,
 }
 
-const MyPage = () => {
-  const [toggleTheme] = useTheme(theme)
+const FooterStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: 28,
+  fontWeight: 800,
+  height: 80,
+}
 
+const MyPage = ({ toggleTheme }) => {
   return (
-    <Layout>
+    <Layout style={{ minHeight: '100vh' }}>
       <Header style={HeaderStyle}>
         <Link to={'/'}>
           <Image preview={false} src={logo} alt='logo' />
         </Link>
-        <h1>Pokemon stats</h1>
-        <Button type='primary' onClick={toggleTheme}>
-          Theme
-        </Button>
+        <Title>Pokemon stats</Title>
+        <Button onClick={toggleTheme}>Тема</Button>
       </Header>
-      <Content>
+      <Content
+        style={{
+          padding: 24,
+          flexGrow: 1,
+        }}>
         <Routes>
           <Route path='/' element={<Main />} />
           <Route path='/details/:nameid' element={<Details />} />
           <Route path='*' element={<p>Not Found</p>} />
         </Routes>
       </Content>
-      <Footer />
+      <Footer style={FooterStyle}>Fooooooter</Footer>
     </Layout>
   )
 }
 
-const MyApp = () => (
-  <ConfigProvider
-    theme={{
+const MyApp = () => {
+  const themes = {
+    dark: {
       token: {
-        colorBgContainer: '#dadfdf',
+        colorBgLayout: '#093258',
+        colorTextHeading: '#ca44d6',
       },
-    }}>
-    <App>
-      <MyPage />
-    </App>
-  </ConfigProvider>
-)
+      components: {
+        Layout: {
+          headerBg: '#2d4155',
+          footerBg: '#2d4155',
+        },
+        Card: {
+          headerBg: '#2d4155',
+        },
+        Button: {
+          defaultBg: '#2d4155',
+          defaultBorderColor: '#807303',
+          defaultColor: '#ca44d6',
+        },
+      },
+    },
+    light: {
+      token: {
+        colorBgLayout: '#8BA5E0',
+        colorTextHeading: '#807303',
+      },
+      components: {
+        Layout: {
+          headerBg: '#A88BE0',
+          footerBg: '#8B8AE0',
+          footerColor: '#807303',
+        },
+        Card: {
+          headerBg: '#A88BE0',
+        },
+        Button: {
+          defaultBg: '#A88BE0',
+          defaultBorderColor: '#807303',
+          defaultColor: '#807303',
+        },
+      },
+    },
+  }
+
+  const [Theme, toggleTheme] = useTheme(themes)
+  console.log(Theme)
+
+  return (
+    <ConfigProvider theme={Theme}>
+      <App>
+        <MyPage toggleTheme={toggleTheme} />
+      </App>
+    </ConfigProvider>
+  )
+}
 
 export default MyApp

@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import CardList from '../../component/CardList/CardList'
 import NavComponent from '../../component/NavComponent/NavComponent'
-import PaginationButton from '../../component/PaginationButton/PaginationButton'
 import { getAllCards, getCard } from '../../api/cardsApi'
 import usePagination from '../../hooks/usePagination'
-import { Space } from 'antd'
+import { Button, Space } from 'antd'
 
 const Main = () => {
   console.log('main', 'rerender')
@@ -64,8 +63,16 @@ const Main = () => {
         <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
       )}
       <Space align='center' size='large' style={{ width: '100%', justifyContent: 'center', margin: '20px 0 0 0' }}>
-        {pageNumber > 1 && <PaginationButton name='Назад' onClick={prevPage} />}
-        {pageNumber < totalPages && <PaginationButton $bgColor='#760f96' name='Вперед' onClick={nextPage} />}
+        {pageNumber > 1 && (
+          <Button onClick={prevPage} shape='round' size='large' loading={isLoading}>
+            Назад
+          </Button>
+        )}
+        {pageNumber < totalPages && (
+          <Button onClick={nextPage} shape='round' size='large' loading={isLoading}>
+            Вперед
+          </Button>
+        )}
       </Space>
     </>
   )

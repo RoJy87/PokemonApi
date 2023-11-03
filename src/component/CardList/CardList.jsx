@@ -16,10 +16,10 @@ const CardList = memo(function CardList({ pokemons, isLoading }) {
         xl: 6,
         xxl: 8,
       }}
-      pagination={{
-        position: 'bottom',
-        align: 'center',
-      }}
+      // pagination={{
+      //   position: 'bottom',
+      //   align: 'center',
+      // }}
       loading={isLoading}
       dataSource={pokemons}
       renderItem={(pokemon) => (
