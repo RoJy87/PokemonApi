@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 const useTheme = (ThemeContext) => {
   const [theme, setTheme] = useState('light')
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme(theme === 'light' ? 'dark' : 'light')
-  }
+  }, [theme])
 
   const Theme = ThemeContext[theme]
 

@@ -3,11 +3,10 @@ import CardList from '../../component/CardList/CardList'
 import NavComponent from '../../component/NavComponent/NavComponent'
 import { getAllCards, getCard } from '../../api/cardsApi'
 import usePagination from '../../hooks/usePagination'
-import { Button, Space } from 'antd'
+import { Button, Result, Space } from 'antd'
+import { Link } from 'react-router-dom'
 
 const Main = () => {
-  console.log('main', 'rerender')
-
   const [pageNumber, limitOnPage, totalPages, prevPage, nextPage, onClickFilter, setTotalPages] = usePagination()
 
   const [pokemons, setPokemons] = useState([])
@@ -22,6 +21,7 @@ const Main = () => {
         const { totalCount, pokemons } = await getAllCards(limit, offset)
         setTotalPages(Math.floor(totalCount / limit))
         setPokemons(pokemons)
+        setSearchPoke(pokemons)
         setIsLoading(false)
       } catch (error) {
         console.log(error)
@@ -29,10 +29,6 @@ const Main = () => {
     },
     [setTotalPages],
   )
-
-  useEffect(() => {
-    setSearchPoke(pokemons)
-  }, [pokemons])
 
   useEffect(() => {
     setPokemons([])
@@ -54,26 +50,40 @@ const Main = () => {
     [pokemons],
   )
 
+  function resetSearch() {
+    setSearchNotFound(false)
+    setSearchPoke(pokemons)
+  }
+
   return (
     <>
       <NavComponent onSearchHandler={onSearchHandler} onClickFilter={onClickFilter} />
       {searchNotFound ? (
-        <h1>Не найдено</h1>
+        <Result
+          title='Покемон не найден, попробуйте другое имя'
+          extra={
+            <Button onClick={resetSearch} type='primary'>
+              На главную
+            </Button>
+          }
+        />
       ) : (
         <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
       )}
-      <Space align='center' size='large' style={{ width: '100%', justifyContent: 'center', margin: '20px 0 0 0' }}>
-        {pageNumber > 1 && (
-          <Button onClick={prevPage} shape='round' size='large' loading={isLoading}>
-            Назад
-          </Button>
-        )}
-        {pageNumber < totalPages && (
-          <Button onClick={nextPage} shape='round' size='large' loading={isLoading}>
-            Вперед
-          </Button>
-        )}
-      </Space>
+      {!searchNotFound && (
+        <Space align='center' size='large' style={{ width: '100%', justifyContent: 'center', margin: '20px 0 0 0' }}>
+          {pageNumber > 1 && (
+            <Button onClick={prevPage} shape='round' size='large' loading={isLoading}>
+              Назад
+            </Button>
+          )}
+          {pageNumber < totalPages && (
+            <Button onClick={nextPage} shape='round' size='large' loading={isLoading}>
+              Вперед
+            </Button>
+          )}
+        </Space>
+      )}
     </>
   )
 }
