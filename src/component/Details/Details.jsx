@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { getCard } from '../../api/cardsApi'
 import { Link, useParams } from 'react-router-dom'
-import { Card, Image, Flex, Space, Divider } from 'antd'
+import { Card, Image, Divider, Row, Typography, List } from 'antd'
+import { CloseOutlined } from '@ant-design/icons'
+import Paragraph from 'antd/es/typography/Paragraph'
 
 export default function Details() {
-  console.log('Details', 'rerender')
-
   const [pokemon, setPokemon] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { nameid } = useParams()
@@ -28,33 +28,42 @@ export default function Details() {
   return (
     pokemon && (
       <Divider>
-        {isLoading ? (
-          <h1>Загрузка...</h1>
-        ) : (
-          <Flex vertical justify='center' align='center' style={{ width: 300 }}>
-            <Link to={'/'}></Link>
-            <h3>{pokemon.name}</h3>
-            <img src={pokemon.sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
-            <div>
-              <p>Abilities</p>
-              <div>
-                {pokemon.abilities?.map((poke, index) => {
-                  return <p key={index}>{poke.ability?.name}</p>
-                })}
-              </div>
-            </div>
-            <div>
-              {pokemon.stats?.map((poke, index) => {
+        <Card title={pokemon.name} style={{ width: 400, position: 'relative' }} loading={isLoading}>
+          <Link to={'/'} style={{ position: 'absolute', right: 15, top: 15 }}>
+            <CloseOutlined />
+          </Link>
+          <Image
+            src={pokemon.sprites?.other?.dream_world?.front_default}
+            alt={pokemon.name}
+            style={{ objectFit: 'contain' }}
+            width={150}
+          />
+          <Row style={{ flexDirection: 'column' }}>
+            <Typography.Title level={4}>Abilities</Typography.Title>
+            <Row style={{ gap: 20, justifyContent: 'center' }}>
+              {pokemon.abilities?.map((poke, index) => {
                 return (
-                  <div key={index}>
-                    <p>{poke.stat?.name}:</p>
-                    <p>{poke.base_stat} points</p>
-                  </div>
+                  <Paragraph style={{ padding: 10, backgroundColor: ' #aa4ce9', borderRadius: 15 }} key={index}>
+                    {poke.ability?.name}
+                  </Paragraph>
                 )
               })}
-            </div>
-          </Flex>
-        )}
+            </Row>
+          </Row>
+          <List
+            itemLayout='horizntal'
+            size='small'
+            bordered={true}
+            width={200}
+            dataSource={pokemon.stats}
+            renderItem={(poke, index) => (
+              <List.Item key={index}>
+                <Paragraph>{poke.stat?.name}</Paragraph>
+                <Paragraph>{`${poke.base_stat} points`}</Paragraph>
+              </List.Item>
+            )}
+          />
+        </Card>
       </Divider>
     )
   )

@@ -4,6 +4,7 @@ import NavComponent from '../../component/NavComponent/NavComponent'
 import PaginationButton from '../../component/PaginationButton/PaginationButton'
 import { getAllCards, getCard } from '../../api/cardsApi'
 import usePagination from '../../hooks/usePagination'
+import { Space } from 'antd'
 
 const Main = () => {
   console.log('main', 'rerender')
@@ -62,10 +63,10 @@ const Main = () => {
       ) : (
         <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
       )}
-      <div>
+      <Space align='center' size='large' style={{ width: '100%', justifyContent: 'center', margin: '20px 0 0 0' }}>
         {pageNumber > 1 && <PaginationButton name='Назад' onClick={prevPage} />}
         {pageNumber < totalPages && <PaginationButton $bgColor='#760f96' name='Вперед' onClick={nextPage} />}
-      </div>
+      </Space>
     </>
   )
 }

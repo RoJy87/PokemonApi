@@ -4,7 +4,7 @@ import Details from '../Details/Details'
 import useTheme from '../../hooks/useTheme'
 import logo from '../../image/logo.png'
 import { Link } from 'react-router-dom'
-import { App, Button, ConfigProvider, Layout } from 'antd'
+import { App, Button, ConfigProvider, Image, Layout } from 'antd'
 const { Header, Content, Footer } = Layout
 
 const theme = {
@@ -39,7 +39,7 @@ const MyPage = () => {
     <Layout>
       <Header style={HeaderStyle}>
         <Link to={'/'}>
-          <img src={logo} alt='logo' />
+          <Image preview={false} src={logo} alt='logo' />
         </Link>
         <h1>Pokemon stats</h1>
         <Button type='primary' onClick={toggleTheme}>
@@ -59,7 +59,12 @@ const MyPage = () => {
 }
 
 const MyApp = () => (
-  <ConfigProvider>
+  <ConfigProvider
+    theme={{
+      token: {
+        colorBgContainer: '#dadfdf',
+      },
+    }}>
     <App>
       <MyPage />
     </App>
