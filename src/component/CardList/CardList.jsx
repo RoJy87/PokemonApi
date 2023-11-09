@@ -28,7 +28,6 @@ const CardList = memo(function CardList({ pokemons, isLoading }) {
             name={pokemon.name}
             title={pokemon.name}
             loading={isLoading}
-            hoverable={true}
             bodyStyle={{ display: 'flex', justifyContent: 'center' }}
             headStyle={{ textAlign: 'center' }}>
             <NavLink to={`details/${pokemon.name}`}>
