@@ -9,9 +9,10 @@ import usePagination from '../../hooks/usePagination'
 import { Button, Result, Space } from 'antd'
 
 const Main = () => {
-  const [pageNumber, limitOnPage, totalPages, prevPage, nextPage, onClickFilter] = usePagination()
+  const [pageNumber, limitOnPage, prevPage, nextPage, onClickFilter, offset] = usePagination()
 
   const pokemons = useSelector((state) => state.pokemon.pokemons)
+  const totalPages = useSelector((state) => state.pagination.totalPages)
   const searchPoke = useSelector((state) => state.pokemon.searchPoke)
   const dispatch = useDispatch()
 
@@ -36,8 +37,8 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(setPokemons([]))
-    getAllPokemons(limitOnPage, pageNumber)
-  }, [pageNumber, limitOnPage, getAllPokemons, dispatch])
+    getAllPokemons(limitOnPage, offset)
+  }, [pageNumber, limitOnPage, getAllPokemons, dispatch, offset])
 
   const onSearchHandler = useMemo(
     () => async (text) => {
@@ -75,7 +76,7 @@ const Main = () => {
           }
         />
       ) : (
-        <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
+        <CardList offset={offset} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
       )}
       {!searchNotFound && (
         <Space align='center' size='large' style={{ width: '100%', justifyContent: 'center', margin: '20px 0 0 0' }}>

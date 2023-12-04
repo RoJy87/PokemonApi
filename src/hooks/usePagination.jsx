@@ -5,7 +5,7 @@ import { setLimitOnPage, setPageNumber } from '../slice/paginationSlice'
 export default function usePagination() {
   const pageNumber = useSelector((state) => state.pagination.pageNumber)
   const limitOnPage = useSelector((state) => state.pagination.limitOnPage)
-  const totalPages = useSelector((state) => state.pagination.totalPages)
+  const offset = limitOnPage * pageNumber
 
   const dispatch = useDispatch()
 
@@ -24,5 +24,5 @@ export default function usePagination() {
     [dispatch],
   )
 
-  return [pageNumber, limitOnPage, totalPages, prevPage, nextPage, onClickFilter]
+  return [pageNumber, limitOnPage, prevPage, nextPage, onClickFilter, offset]
 }
