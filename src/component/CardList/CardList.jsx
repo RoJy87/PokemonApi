@@ -4,7 +4,6 @@ import { Card, Image, List } from 'antd'
 import { NavLink } from 'react-router-dom'
 
 const CardList = memo(function CardList({ pokemons, isLoading }) {
-  console.log('CardList', 'rerender')
   return (
     <List
       grid={{
@@ -25,13 +24,12 @@ const CardList = memo(function CardList({ pokemons, isLoading }) {
       renderItem={(pokemon) => (
         <List.Item key={pokemon.name}>
           <Card
-            name={pokemon.name}
             title={pokemon.name}
             loading={isLoading}
-            bodyStyle={{ display: 'flex', justifyContent: 'center' }}
+            bodyStyle={{ display: 'flex', justifyContent: 'center', maxHeight: '148px' }}
             headStyle={{ textAlign: 'center' }}>
             <NavLink to={`details/${pokemon.name}`}>
-              <Image src={poke} width={100} alt={pokemon.name} preview={false} />
+              <Image src={poke} width={100} alt={pokemon.name} preview={false} loading={isLoading} />
             </NavLink>
           </Card>
         </List.Item>

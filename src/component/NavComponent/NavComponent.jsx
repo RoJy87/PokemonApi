@@ -12,8 +12,6 @@ const boxStyle = {
 const CARDS_ON_PAGE = [20, 40, 60]
 
 const Search = memo(function Search({ onSearchHandler, onClickFilter }) {
-  console.log('Search', 'rerender')
-
   return (
     <Flex justify='space-around' align='flex-end' style={boxStyle}>
       <Input.Search

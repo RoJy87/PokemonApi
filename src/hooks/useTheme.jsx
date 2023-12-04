@@ -1,11 +1,14 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setTheme } from '../slice/themeSlice'
 
 const useTheme = (ThemeContext) => {
-  const [theme, setTheme] = useState('light')
+  const theme = useSelector((state) => state.theme.theme)
+  const dispatch = useDispatch()
 
   const toggleTheme = useCallback(() => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
-  }, [theme])
+    dispatch(setTheme(theme === 'light' ? 'dark' : 'light'))
+  }, [dispatch, theme])
 
   const Theme = ThemeContext[theme]
 
