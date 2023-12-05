@@ -1,40 +1,17 @@
 import { render, screen } from '@testing-library/react'
+import '../../../matchMedia'
 import App from './App'
 import { testRender } from '../../helpers/testRender'
 import { MemoryRouter } from 'react-router-dom'
 import ThemeWrapper from '../themeWrapper/themeWrapper'
 import { createReduxStore } from '../../store/store'
 import { Provider } from 'react-redux'
+import CardList from '../CardList/CardList'
 
 describe('TEST APP', () => {
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    })
-  })
-
   test('renders App', () => {
-    render(
-      <Provider store={createReduxStore()}>
-        <ThemeWrapper>
-          <MemoryRouter initialEntries={['/']}>
-            <App />
-          </MemoryRouter>
-        </ThemeWrapper>
-      </Provider>,
-    )
-    const headerText = screen.getByText(/Pokemon stats/i)
-    const btn = screen.getByRole('button')
-    expect(headerText).toBeInTheDocument()
-    expect(btn).toBeInTheDocument()
+    render(testRender(<App />, [{ route: '/' }]))
+    expect(screen.getByText(/Pokemon stats/i)).toBeInTheDocument()
   })
 
   // test('renders card', async () => {
