@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setPokemon } from '../../slice/pokemonSlice'
-import { getCard } from '../../api/cardsApi'
+import { setPokemon } from '../../store/reducers/pokemonReducer'
+import { getPokemonApi } from '../../api/cardsApi'
 import { Link, useParams } from 'react-router-dom'
 import { Card, Image, Divider, Row, Typography, List } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
-import Paragraph from 'antd/es/typography/Paragraph'
+const { Paragraph } = Typography
 
 export default React.memo(function Details() {
   const pokemon = useSelector((state) => state.pokemon.pokemon)
   const dispatch = useDispatch()
+  const { getCard } = getPokemonApi
   const [isLoading, setIsLoading] = useState(true)
   const { nameid } = useParams()
 
@@ -26,7 +27,7 @@ export default React.memo(function Details() {
       }
       setIsLoading(false)
     },
-    [dispatch],
+    [dispatch, getCard],
   )
 
   useEffect(() => {
@@ -50,7 +51,6 @@ export default React.memo(function Details() {
               alt={name}
               style={{ objectFit: 'contain' }}
               width={150}
-              loading='lazy'
             />
             <Row style={{ flexDirection: 'column' }}>
               <Typography.Title level={4}>Abilities</Typography.Title>

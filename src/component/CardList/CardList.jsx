@@ -24,12 +24,13 @@ const CardList = memo(function CardList({ pokemons, isLoading }) {
       renderItem={(pokemon) => (
         <List.Item key={pokemon.name}>
           <Card
+            data-testid='card'
             title={pokemon.name}
             loading={isLoading}
             bodyStyle={{ display: 'flex', justifyContent: 'center', maxHeight: '148px' }}
             headStyle={{ textAlign: 'center' }}>
             <NavLink to={`details/${pokemon.name}`}>
-              <Image src={poke} width={100} alt={pokemon.name} preview={false} loading={isLoading} />
+              <Image src={poke} width={100} alt={pokemon.name} preview={false} />
             </NavLink>
           </Card>
         </List.Item>

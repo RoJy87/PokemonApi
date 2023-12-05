@@ -15,6 +15,7 @@ const Search = memo(function Search({ onSearchHandler, onClickFilter }) {
   return (
     <Flex justify='space-around' align='flex-end' style={boxStyle}>
       <Input.Search
+        data-testid='search input'
         style={{ width: '50%' }}
         allowClear
         enterButton='Search'
@@ -25,7 +26,13 @@ const Search = memo(function Search({ onSearchHandler, onClickFilter }) {
       <Space>
         {CARDS_ON_PAGE.map((button, index) => {
           return (
-            <Button size='medium' type='primary' shape='circle' key={index} onClick={() => onClickFilter(button)}>
+            <Button
+              data-testid='btn-theme'
+              size='medium'
+              type='primary'
+              shape='circle'
+              key={index}
+              onClick={() => onClickFilter(button)}>
               {button}
             </Button>
           )

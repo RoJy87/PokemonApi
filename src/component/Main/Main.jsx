@@ -1,25 +1,28 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setPokemons, setSearchPoke } from '../../slice/pokemonSlice'
-import { setTotalPages } from '../../slice/paginationSlice'
+import { setPokemons, setSearchPoke } from '../../store/reducers/pokemonReducer'
+import { setTotalPages } from '../../store/reducers/paginationReducer'
 import CardList from '../../component/CardList/CardList'
 import NavComponent from '../../component/NavComponent/NavComponent'
-import { getAllCards, getCard } from '../../api/cardsApi'
+import { getPokemonApi } from '../../api/cardsApi'
 import usePagination from '../../hooks/usePagination'
 import { Button, Result, Space } from 'antd'
+import { getAllPokemons, getSearchedPokemon } from '../../store/selectors/getPokemon'
+import { getTotalPages } from '../../store/selectors/getPagination'
 
 const Main = () => {
   const [pageNumber, limitOnPage, prevPage, nextPage, onClickFilter, offset] = usePagination()
+  const { getAllCards, getCard } = getPokemonApi
 
-  const pokemons = useSelector((state) => state.pokemon.pokemons)
-  const totalPages = useSelector((state) => state.pagination.totalPages)
-  const searchPoke = useSelector((state) => state.pokemon.searchPoke)
+  const pokemons = useSelector(getAllPokemons)
+  const totalPages = useSelector(getTotalPages)
+  const searchPoke = useSelector(getSearchedPokemon)
   const dispatch = useDispatch()
 
   const [searchNotFound, setSearchNotFound] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const getAllPokemons = useCallback(
+  const getAllPokemonsHandler = useCallback(
     async (limit, offset) => {
       setIsLoading(true)
       try {
@@ -32,13 +35,13 @@ const Main = () => {
         console.log(error)
       }
     },
-    [dispatch],
+    [dispatch, getAllCards],
   )
 
   useEffect(() => {
     dispatch(setPokemons([]))
-    getAllPokemons(limitOnPage, offset)
-  }, [pageNumber, limitOnPage, getAllPokemons, dispatch, offset])
+    getAllPokemonsHandler(limitOnPage, offset)
+  }, [pageNumber, limitOnPage, getAllPokemonsHandler, dispatch, offset])
 
   const onSearchHandler = useMemo(
     () => async (text) => {
@@ -52,7 +55,7 @@ const Main = () => {
         console.log(error)
       }
     },
-    [dispatch, pokemons],
+    [dispatch, getCard, pokemons],
   )
 
   const resetSearch = useMemo(

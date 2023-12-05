@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLimitOnPage, setPageNumber } from '../slice/paginationSlice'
+import { setLimitOnPage, setPageNumber } from '../store/reducers/paginationReducer'
+import { getLimitOnPage, getPageNumber } from '../store/selectors/getPagination'
 
 export default function usePagination() {
-  const pageNumber = useSelector((state) => state.pagination.pageNumber)
-  const limitOnPage = useSelector((state) => state.pagination.limitOnPage)
+  const pageNumber = useSelector(getPageNumber)
+  const limitOnPage = useSelector(getLimitOnPage)
   const offset = limitOnPage * pageNumber
 
   const dispatch = useDispatch()

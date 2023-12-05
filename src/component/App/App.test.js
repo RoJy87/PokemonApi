@@ -1,0 +1,67 @@
+import { render, screen } from '@testing-library/react'
+import App from './App'
+import { testRender } from '../../helpers/testRender'
+import { MemoryRouter } from 'react-router-dom'
+import ThemeWrapper from '../themeWrapper/themeWrapper'
+import { createReduxStore } from '../../store/store'
+import { Provider } from 'react-redux'
+
+describe('TEST APP', () => {
+  beforeAll(() => {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    })
+  })
+
+  test('renders App', () => {
+    render(
+      <Provider store={createReduxStore()}>
+        <ThemeWrapper>
+          <MemoryRouter initialEntries={['/']}>
+            <App />
+          </MemoryRouter>
+        </ThemeWrapper>
+      </Provider>,
+    )
+    const headerText = screen.getByText(/Pokemon stats/i)
+    const btn = screen.getByRole('button')
+    expect(headerText).toBeInTheDocument()
+    expect(btn).toBeInTheDocument()
+  })
+
+  // test('renders card', async () => {
+  //   axios.get.mockResolvedValueOnce({
+  //     data: {
+  //       totalCount: 10,
+  //       pokemons: ['qwe1', 'qwe2', 'qwe3'],
+  //     },
+  //   })
+  //   render(
+  //     <MemoryRouter initialEntries={['/']}>
+  //       <App />
+  //     </MemoryRouter>,
+  //   )
+  //   const card = await screen.findByTestId('card')
+  //   expect(card).toBeInTheDocument()
+  // })
+
+  // test('INPUT EVENT', () => {
+  //   render(
+  //     <MemoryRouter initialEntries={['/']}>
+  //       <App />
+  //     </MemoryRouter>,
+  //   )
+  //   const input = screen.getByPlaceholderText(/Введите имя покемона/i)
+  //   expect(screen.queryByTestId('search input')).toContainHTML('')
+  //   userEvent.type(input, '123123')
+  //   expect(screen.queryByTestId('search input')).toContainHTML('123123')
+  // })
+})

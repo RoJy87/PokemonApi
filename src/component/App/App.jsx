@@ -1,13 +1,13 @@
-import { Route, Routes } from 'react-router-dom'
-import Main from '../Main/Main'
-import Details from '../Details/Details'
 import useTheme from '../../hooks/useTheme'
 import logo from '../../image/logo.png'
 import { Link } from 'react-router-dom'
-import { Button, ConfigProvider, Image, Layout } from 'antd'
-import Title from 'antd/es/typography/Title'
-import { Content, Footer, Header } from 'antd/es/layout/layout'
+import { Button, Image, Layout, Typography } from 'antd'
 import { themes } from '../../styles/theme'
+import AppRouter from '../../router/AppRouter'
+import ThemeWrapper from '../themeWrapper/themeWrapper'
+
+const { Title } = Typography
+const { Content, Footer, Header } = Layout
 
 const HeaderStyle = {
   display: 'flex',
@@ -28,7 +28,7 @@ const FooterStyle = {
 const App = () => {
   const [Theme, toggleTheme] = useTheme(themes)
   return (
-    <ConfigProvider theme={Theme}>
+    <ThemeWrapper theme={Theme}>
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={HeaderStyle}>
           <Link to={'/'}>
@@ -42,15 +42,11 @@ const App = () => {
             padding: 24,
             flexGrow: 1,
           }}>
-          <Routes>
-            <Route path='/' element={<Main />} />
-            <Route path='/details/:nameid' element={<Details />} />
-            <Route path='*' element={<p>Not Found</p>} />
-          </Routes>
+          <AppRouter />
         </Content>
         <Footer style={FooterStyle}>Fooooooter</Footer>
       </Layout>
-    </ConfigProvider>
+    </ThemeWrapper>
   )
 }
 

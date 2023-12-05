@@ -2,23 +2,30 @@ import axios from 'axios'
 
 const BASE_URL = 'https://pokeapi.co/api/v2/pokemon/'
 
-const getAllCards = async (limit, offset) => {
-  try {
-    console.log(offset, limit)
-    const res = await axios.get(`${BASE_URL}?offset=${offset}&limit=${limit}`)
-    return { totalCount: res.data.count, pokemons: res.data.results }
-  } catch (err) {
-    console.log(err)
+class cardsApi {
+  constructor() {
+    this.url = BASE_URL
+  }
+
+  getAllCards = async (limit, offset) => {
+    try {
+      const res = await axios.get(`${this.url}?offset=${offset}&limit=${limit}`)
+      return { totalCount: res.data.count, pokemons: res.data.results }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  getCard = async (name) => {
+    try {
+      const res = await axios.get(`${this.url}${name}`)
+      return res.data
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 
-const getCard = async (name) => {
-  try {
-    const res = await axios.get(`${BASE_URL}${name}`)
-    return res.data
-  } catch (err) {
-    console.log(err)
-  }
-}
+const getPokemonApi = new cardsApi()
 
-export { getAllCards, getCard }
+export { getPokemonApi }
