@@ -5,7 +5,7 @@ import Details from '../Details/Details'
 
 function App() {
   return (
-    <Layout>
+    <Layout data-testid='layout'>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/details/:nameid' element={<Details />} />

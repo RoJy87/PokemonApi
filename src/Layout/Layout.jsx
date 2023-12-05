@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 import useTheme from '../hooks/useTheme'
 
-const theme = {
+const themes = {
   dark: {
     color: '#FFF',
     backgroundHeader: 'linear-gradient(135deg, #e55d87 0%, #5fc3e4 100%)',
@@ -39,13 +39,13 @@ const Main = styled.main`
 `
 
 const Layout = ({ children }) => {
-  const [Theme, toggleTheme] = useTheme(theme)
+  const [theme, toggleTheme] = useTheme()
 
   return (
-    <ThemeProvider theme={Theme}>
-      <App>
+    <ThemeProvider theme={themes[theme]}>
+      <App data-testid='app'>
         <Header toggleTheme={toggleTheme} />
-        <Main>{children}</Main>
+        <Main data-testid='main'>{children}</Main>
         <Footer />
       </App>
     </ThemeProvider>

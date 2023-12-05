@@ -21,7 +21,7 @@ const HeaderTitle = styled.h1`
   text-align: center;
 `
 
-const HeaderTheme = styled.h1`
+const HeaderTheme = styled.button`
   color: ${(props) => props.theme.color};
   background-color: transparent;
   font-size: 18px;
@@ -38,11 +38,13 @@ const HeaderTheme = styled.h1`
 export default function Header({ toggleTheme }) {
   return (
     <HeaderComponent>
-      <HeaderLink to={'/'}>
+      <HeaderLink data-testid='link-logo' to={'/'}>
         <HeaderLogo src={logo} alt='logo' />
       </HeaderLink>
       <HeaderTitle>Pokemon stats</HeaderTitle>
-      <HeaderTheme onClick={toggleTheme}>Theme</HeaderTheme>
+      <HeaderTheme data-testid='btn-theme' onClick={toggleTheme}>
+        Theme
+      </HeaderTheme>
     </HeaderComponent>
   )
 }

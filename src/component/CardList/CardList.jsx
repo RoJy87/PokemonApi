@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom'
 import { CardListComponent, CardListLoading } from './styled'
 
 const CardList = memo(function CardList({ pokemons, isLoading }) {
-  console.log('CardList', 'rerender')
-
   const { nameid } = useParams()
 
   return isLoading ? (

@@ -1,15 +1,13 @@
 import { useState } from 'react'
 
-const useTheme = (ThemeContext) => {
+const useTheme = () => {
   const [theme, setTheme] = useState('light')
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
 
-  const Theme = ThemeContext[theme]
-
-  return [Theme, toggleTheme]
+  return [theme, toggleTheme]
 }
 
 export default useTheme

@@ -14,8 +14,6 @@ function debounce(func, delay) {
 }
 
 const Search = memo(function Search({ onSearchHandler, onClickFilter }) {
-  console.log('Search', 'rerender')
-
   const debounceHandleSearch = debounce(onSearchHandler, 1000)
 
   function onSearch(e) {
@@ -24,7 +22,7 @@ const Search = memo(function Search({ onSearchHandler, onClickFilter }) {
 
   return (
     <NavComponent>
-      <SearchInput type='text' onChange={onSearch} />
+      <SearchInput data-testid='search-input' type='text' onChange={onSearch} />
       <LimitCards>
         {CARDS_ON_PAGE.map((button, index) => {
           return (

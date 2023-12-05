@@ -14,8 +14,6 @@ const PaginationWrapper = styled.div`
 `
 
 const Main = () => {
-  console.log('main', 'rerender')
-
   const [pageNumber, limitOnPage, totalPages, prevPage, nextPage, onClickFilter, setTotalPages] = usePagination()
 
   const [pokemons, setPokemons] = useState([])

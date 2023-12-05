@@ -17,8 +17,6 @@ import {
 } from './styled'
 
 export default function Details() {
-  console.log('Details', 'rerender')
-
   const [pokemon, setPokemon] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { nameid } = useParams()
@@ -40,7 +38,7 @@ export default function Details() {
 
   return (
     pokemon && (
-      <Detail>
+      <Detail data-testid='detail-card'>
         {isLoading ? (
           <h1>Загрузка...</h1>
         ) : (
