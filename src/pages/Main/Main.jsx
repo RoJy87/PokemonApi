@@ -3,8 +3,10 @@ import CardList from '../../component/CardList/CardList'
 import NavComponent from '../../component/NavComponent/NavComponent'
 import PaginationButton from '../../component/PaginationButton/PaginationButton'
 import styled from 'styled-components'
-import { getAllCards, getCard } from '../../api/cardsApi'
 import usePagination from '../../hooks/usePagination'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllPokemons, getSearchedPokemon, getTotalPokemons } from '../../store/selectors/getPokemons'
+import { fetchAllPokemons, fetchPokemon, setSearchedPokemon } from '../../store/reducers/pokemonReducer'
 
 const PaginationWrapper = styled.div`
   margin: 0 auto 20px;
@@ -14,50 +16,35 @@ const PaginationWrapper = styled.div`
 `
 
 const Main = () => {
-  const [pageNumber, limitOnPage, totalPages, prevPage, nextPage, onClickFilter, setTotalPages] = usePagination()
+  const [pageNumber, limitOnPage, prevPage, nextPage, onClickFilter, offset] = usePagination()
 
-  const [pokemons, setPokemons] = useState([])
-  const [searchPoke, setSearchPoke] = useState(pokemons)
+  const pokemons = useSelector(getAllPokemons)
+  const searchedPokemon = useSelector(getSearchedPokemon)
+  const totalPokemons = useSelector(getTotalPokemons)
+
+  const dispatch = useDispatch()
+
   const [searchNotFound, setSearchNotFound] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-
-  const getAllPokemons = useCallback(
-    async (limit, offset) => {
-      setIsLoading(true)
-      try {
-        const { totalCount, pokemons } = await getAllCards(limit, offset)
-        setTotalPages(Math.floor(totalCount / limit))
-        setPokemons(pokemons)
-        setIsLoading(false)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    [setTotalPages],
-  )
+  const status = useSelector((state) => state.pokemon.status)
 
   useEffect(() => {
-    setSearchPoke(pokemons)
-  }, [pokemons])
-
-  useEffect(() => {
-    setPokemons([])
-    getAllPokemons(limitOnPage, pageNumber)
-  }, [pageNumber, limitOnPage, getAllPokemons])
+    dispatch(fetchAllPokemons({ limit: limitOnPage, offset }))
+  }, [dispatch, limitOnPage, offset, pageNumber])
 
   const onSearchHandler = useCallback(
     async (text) => {
       setSearchNotFound(false)
       try {
-        if (!text) return setSearchPoke(pokemons)
-        const result = await getCard(text)
-        if (!result) return setSearchNotFound(true)
-        setSearchPoke([result])
+        if (!text && !pokemons.lenght) return dispatch(fetchAllPokemons({ limit: limitOnPage, offset }))
+        if (!text && pokemons.lenght) return dispatch(setSearchedPokemon(pokemons))
+        dispatch(fetchPokemon(text))
+        if (!!searchedPokemon) return setSearchNotFound(true)
+        dispatch(setSearchedPokemon())
       } catch (error) {
         console.log(error)
       }
     },
-    [pokemons],
+    [dispatch, limitOnPage, offset, pokemons, searchedPokemon],
   )
 
   return (
@@ -66,11 +53,11 @@ const Main = () => {
       {searchNotFound ? (
         <h1>Не найдено</h1>
       ) : (
-        <CardList offset={pageNumber * limitOnPage} limit={limitOnPage} pokemons={searchPoke} isLoading={isLoading} />
+        <CardList offset={offset} limit={limitOnPage} pokemons={searchedPokemon} status={status} />
       )}
       <PaginationWrapper>
         {pageNumber > 1 && <PaginationButton name='Назад' onClick={prevPage} />}
-        {pageNumber < totalPages && <PaginationButton $bgColor='#760f96' name='Вперед' onClick={nextPage} />}
+        {pageNumber < totalPokemons && <PaginationButton $bgColor='#760f96' name='Вперед' onClick={nextPage} />}
       </PaginationWrapper>
     </>
   )

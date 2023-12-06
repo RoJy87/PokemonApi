@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { getCard } from '../../api/cardsApi'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   Abilities,
@@ -15,56 +14,53 @@ import {
   StatsItem,
   StatsItems,
 } from './styled'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPokemon } from '../../store/selectors/getPokemons'
+import { fetchPokemon } from '../../store/reducers/pokemonReducer'
 
 export default function Details() {
-  const [pokemon, setPokemon] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
+  const pokemon = useSelector(getPokemon)
+
+  const dispatch = useDispatch()
+
+  const status = useSelector((state) => state.pokemon.status)
   const { nameid } = useParams()
 
-  async function getPokemon(name) {
-    setIsLoading(true)
-    try {
-      const newPoke = await getCard(name)
-      setPokemon(newPoke)
-    } catch (error) {
-      console.log(error)
-    }
-    setIsLoading(false)
-  }
-
   useEffect(() => {
-    getPokemon(nameid)
-  }, [nameid])
+    dispatch(fetchPokemon(nameid))
+  }, [dispatch, nameid])
 
   return (
     pokemon && (
       <Detail data-testid='detail-card'>
-        {isLoading ? (
+        {status === 'loading' ? (
           <h1>Загрузка...</h1>
         ) : (
-          <DetailWrapper>
-            <CloseButton to={'/'}></CloseButton>
-            <DetailTitle>{pokemon.name}</DetailTitle>
-            <DetailImage src={pokemon.sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
-            <Abilities>
-              <AbilitiesTitle>Abilities</AbilitiesTitle>
-              <Ability>
-                {pokemon.abilities?.map((poke, index) => {
-                  return <AbilityTitle key={index}>{poke.ability?.name}</AbilityTitle>
+          status === 'succeeded' && (
+            <DetailWrapper>
+              <CloseButton to={'/'}></CloseButton>
+              <DetailTitle>{pokemon.name}</DetailTitle>
+              <DetailImage src={pokemon.sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
+              <Abilities>
+                <AbilitiesTitle>Abilities</AbilitiesTitle>
+                <Ability>
+                  {pokemon.abilities?.map((poke, index) => {
+                    return <AbilityTitle key={index}>{poke.ability?.name}</AbilityTitle>
+                  })}
+                </Ability>
+              </Abilities>
+              <Stats>
+                {pokemon.stats?.map((poke, index) => {
+                  return (
+                    <StatsItems key={index}>
+                      <StatsItem>{poke.stat?.name}:</StatsItem>
+                      <StatsItem>{poke.base_stat} points</StatsItem>
+                    </StatsItems>
+                  )
                 })}
-              </Ability>
-            </Abilities>
-            <Stats>
-              {pokemon.stats?.map((poke, index) => {
-                return (
-                  <StatsItems key={index}>
-                    <StatsItem>{poke.stat?.name}:</StatsItem>
-                    <StatsItem>{poke.base_stat} points</StatsItem>
-                  </StatsItems>
-                )
-              })}
-            </Stats>
-          </DetailWrapper>
+              </Stats>
+            </DetailWrapper>
+          )
         )}
       </Detail>
     )

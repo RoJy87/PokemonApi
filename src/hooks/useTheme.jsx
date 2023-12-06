@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setTheme } from '../store/reducers/themeReducer'
+import { getTheme } from '../store/selectors/getTheme'
 
 const useTheme = () => {
-  const [theme, setTheme] = useState('light')
+  const theme = useSelector(getTheme)
+
+  const dispatch = useDispatch()
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
+    dispatch(setTheme(theme === 'light' ? 'dark' : 'light'))
   }
 
   return [theme, toggleTheme]
