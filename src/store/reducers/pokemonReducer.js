@@ -14,10 +14,14 @@ const BASE_URL = 'https://pokeapi.co/api/v2/pokemon/'
 
 export const fetchAllPokemons = createAsyncThunk('pokemon/setPokemons', async ({ limit, offset }) => {
   try {
-    console.log({ limit, offset })
     const res = await axios.get(`${BASE_URL}?offset=${offset}&limit=${limit}`)
-    console.log(res.data)
-    return { totalPages: res.data.count, pokemons: res.data.results }
+    const { count, results } = res.data
+    const pokemons = results.sort((a, b) => {
+      const nameA = a.name.toUpperCase()
+      const nameB = b.name.toUpperCase()
+      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+    })
+    return { totalPages: count, pokemons }
   } catch (err) {
     console.log(err)
     throw new Error('Что-то пошло не так')
@@ -27,7 +31,6 @@ export const fetchAllPokemons = createAsyncThunk('pokemon/setPokemons', async ({
 export const fetchPokemon = createAsyncThunk('pokemon/setPokemon', async (name) => {
   try {
     const res = await axios.get(`${BASE_URL}${name}`)
-    console.log(res.data)
     return { pokemon: res.data }
   } catch (err) {
     console.log(err)

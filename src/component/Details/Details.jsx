@@ -20,6 +20,7 @@ import { fetchPokemon } from '../../store/reducers/pokemonReducer'
 
 export default function Details() {
   const pokemon = useSelector(getPokemon)
+  const { name, sprites, abilities, stats } = pokemon
 
   const dispatch = useDispatch()
 
@@ -39,18 +40,18 @@ export default function Details() {
           status === 'succeeded' && (
             <DetailWrapper>
               <CloseButton to={'/'}></CloseButton>
-              <DetailTitle>{pokemon.name}</DetailTitle>
-              <DetailImage src={pokemon.sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
+              <DetailTitle>{name}</DetailTitle>
+              <DetailImage src={sprites?.other?.dream_world?.front_default} alt={pokemon.name} />
               <Abilities>
                 <AbilitiesTitle>Abilities</AbilitiesTitle>
                 <Ability>
-                  {pokemon.abilities?.map((poke, index) => {
+                  {abilities?.map((poke, index) => {
                     return <AbilityTitle key={index}>{poke.ability?.name}</AbilityTitle>
                   })}
                 </Ability>
               </Abilities>
               <Stats>
-                {pokemon.stats?.map((poke, index) => {
+                {stats?.map((poke, index) => {
                   return (
                     <StatsItems key={index}>
                       <StatsItem>{poke.stat?.name}:</StatsItem>
