@@ -4,7 +4,7 @@ import { CardButton, CardComponent, CardImage, CardTitle } from './styled'
 
 const Card = memo(function Card({ name }) {
   return (
-    <CardComponent>
+    <CardComponent data-testid='card-item'>
       <CardTitle>{name}</CardTitle>
       <CardImage src={poke} alt='Иконка покемона' />
       <CardButton to={`details/${name}`}>Подробнее</CardButton>

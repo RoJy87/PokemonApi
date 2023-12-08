@@ -3,7 +3,7 @@ import { Button } from './styled'
 
 export default function PaginationButton({ onClick, name, $bgColor }) {
   return (
-    <Button onClick={onClick} $bgColor={$bgColor}>
+    <Button data-testid='pagination-btn' onClick={onClick} $bgColor={$bgColor}>
       {name}
     </Button>
   )

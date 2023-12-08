@@ -1,15 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router'
-import App from '../component/App/App'
+import renderTests from '../helpers/renderTests'
+import Main from '../pages/Main/Main'
 
-describe('Hook test', () => {
+describe('Hook theme test', () => {
   test('useTheme test', () => {
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>,
-    )
+    render(renderTests(null, { path: '/' }))
 
     const layout = screen.getByTestId('app')
     const btn = screen.getByTestId('btn-theme')
