@@ -21,6 +21,12 @@ const Main = () => {
   const pokemons = useSelector(getAllPokemons)
   const totalPokemons = useSelector(getTotalPokemons)
 
+  const pokemonsKeys = pokemons.map((item) => {
+    return Object.values(item)
+  })
+
+  console.log(pokemonsKeys)
+
   const dispatch = useDispatch()
 
   const [searchNotFound, setSearchNotFound] = useState(false)

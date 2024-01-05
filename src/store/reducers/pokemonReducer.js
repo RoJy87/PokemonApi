@@ -20,7 +20,6 @@ export const pokemonSlice = createSlice({
   initialState,
   reducers: (create) => ({
     setPokemons: create.reducer((state, action) => {
-      console.log('no-fetch')
       console.log(action.payload)
       state.pokemons = action.payload
     }),
@@ -56,7 +55,6 @@ export const pokemonSlice = createSlice({
           state.error = action.error.message
         },
         fulfilled: (state, action) => {
-          console.log('fetch')
           state.status = 'succeeded'
           state.pokemons = action.payload.pokemons
           state.totalPokemons = action.payload.totalPages
