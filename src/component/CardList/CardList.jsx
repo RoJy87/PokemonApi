@@ -1,24 +1,42 @@
-import React from "react";
-import Card from "../Card/Card";
-import "./cardList.css";
+import React, { memo } from 'react'
+import poke from '../../image/icon.png'
+import { Card, Image, List } from 'antd'
+import { NavLink } from 'react-router-dom'
 
-export default function CardList({ cards, onClickHandler, isActive }) {
+const CardList = memo(function CardList({ pokemons, isLoading }) {
+  console.log('CardList', 'rerender')
   return (
-    <ul className={`card-list ${isActive ? "card-list_active" : ""}`}>
-      {cards?.map((card) => {
-        return (
+    <List
+      grid={{
+        gutter: 16,
+        xs: 1,
+        sm: 2,
+        md: 4,
+        lg: 4,
+        xl: 6,
+        xxl: 8,
+      }}
+      // pagination={{
+      //   position: 'bottom',
+      //   align: 'center',
+      // }}
+      loading={isLoading}
+      dataSource={pokemons}
+      renderItem={(pokemon) => (
+        <List.Item key={pokemon.name}>
           <Card
-            key={card.id + Math.random()}
-            image={card.sprites.front_default}
-            name={card.name}
-            height={card.height}
-            weight={card.weight}
-            base={card.base_experience}
-            handleClick={() => onClickHandler(card)}
-            className='card-list__item'
-          />
-        );
-      })}
-    </ul>
-  );
-}
+            name={pokemon.name}
+            title={pokemon.name}
+            loading={isLoading}
+            bodyStyle={{ display: 'flex', justifyContent: 'center' }}
+            headStyle={{ textAlign: 'center' }}>
+            <NavLink to={`details/${pokemon.name}`}>
+              <Image src={poke} width={100} alt={pokemon.name} preview={false} />
+            </NavLink>
+          </Card>
+        </List.Item>
+      )}
+    />
+  )
+})
+export default CardList

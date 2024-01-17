@@ -1,100 +1,57 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import { getAllCards, getCard } from "../../api/cardsApi";
-import CardList from "../CardList/CardList";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import Details from "../Details/Details";
+import { Route, Routes } from 'react-router-dom'
+import Main from '../Main/Main'
+import Details from '../Details/Details'
+import useTheme from '../../hooks/useTheme'
+import logo from '../../image/logo.png'
+import { Link } from 'react-router-dom'
+import { Button, ConfigProvider, Image, Layout } from 'antd'
+import Title from 'antd/es/typography/Title'
+import { Content, Footer, Header } from 'antd/es/layout/layout'
+import { themes } from '../../styles/theme'
 
-const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
-
-function App() {
-  const [url, setUrl] = useState(BASE_URL);
-  const [prevCards, setPrevCards] = useState("");
-  const [nextCards, setNextCards] = useState("");
-  const [pokemons, setPokemons] = useState([]);
-  const [pokemon, setPokemon] = useState({});
-  const [isActive, setIsActive] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function getPokemon(res) {
-    res.map(async (item) => {
-      getCard(item.url)
-        .then((result) => {
-          setPokemons((prev) => {
-            const isExist = prev.some((item) => item.id === result.data.id);
-            if (!isExist) {
-              return [...prev, result.data];
-            }
-            return prev;
-          });
-        })
-        .catch((err) => console.log(err));
-    });
-  }
-
-  useEffect(() => {
-    setIsLoading(true);
-    getAllCards(url)
-      .then((data) => {
-        getPokemon(data.results);
-        setPrevCards(data.previous);
-        setNextCards(data.next);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
-  }, [url]);
-
-  function onCloseHandler() {
-    setPokemon({});
-    setIsActive(false);
-  }
-
-  return (
-    <div className='App'>
-      <Header />
-      <div className={`wrapper ${isActive ? "wrapper_active" : ""}`}>
-        {!isLoading ? (
-          <CardList
-            isActive={isActive}
-            cards={pokemons}
-            onClickHandler={(item) => {
-              setIsActive(true);
-              setPokemon(item);
-            }}
-          />
-        ) : (
-          <h1>Идет загрузка...</h1>
-        )}
-        {Object.keys(pokemon).length ? (
-          <Details data={pokemon} onClose={onCloseHandler} />
-        ) : null}
-      </div>
-      <div className='pagination'>
-        {prevCards && (
-          <button
-            className='pagination-btn'
-            onClick={() => {
-              setPokemons([]);
-              setUrl(prevCards);
-            }}>
-            Назад
-          </button>
-        )}
-        {nextCards && (
-          <button
-            className='pagination-btn'
-            onClick={() => {
-              setPokemons([]);
-              setUrl(nextCards);
-            }}>
-            Вперед
-          </button>
-        )}
-      </div>
-      <Footer />
-    </div>
-  );
+const HeaderStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: ' space-between',
+  height: 120,
 }
 
-export default App;
+const FooterStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: 28,
+  fontWeight: 800,
+  height: 80,
+}
+
+const App = () => {
+  const [Theme, toggleTheme] = useTheme(themes)
+  return (
+    <ConfigProvider theme={Theme}>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Header style={HeaderStyle}>
+          <Link to={'/'}>
+            <Image preview={false} src={logo} alt='logo' />
+          </Link>
+          <Title>Pokemon stats</Title>
+          <Button onClick={toggleTheme}>Тема</Button>
+        </Header>
+        <Content
+          style={{
+            padding: 24,
+            flexGrow: 1,
+          }}>
+          <Routes>
+            <Route path='/' element={<Main />} />
+            <Route path='/details/:nameid' element={<Details />} />
+            <Route path='*' element={<p>Not Found</p>} />
+          </Routes>
+        </Content>
+        <Footer style={FooterStyle}>Fooooooter</Footer>
+      </Layout>
+    </ConfigProvider>
+  )
+}
+
+export default App
